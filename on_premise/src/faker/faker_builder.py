@@ -49,9 +49,17 @@ class EcommerceDataGenerator:
         for _ in range(user_count):
             self._users.append({
                 "user_id": str(uuid.uuid4()),
-                "name": self._fake.name(),
                 "email": self._fake.email(),
-                "register_date": self._fake.date_time_this_year()
+                "first_name": self._fake.first_name(),
+                "last_name": self._fake.last_name(),
+                "date_of_birth": self._fake.date_of_birth(),
+                "gender": random.randint(0, 1),
+                "loyalty_tier": 0,
+                "is_email_verified": random.choices([0, 1], weights=[15, 85])[0]
+                "is_active": True,
+                "created_at": self._fake.date_time_this_year(),
+                "updated_at": None,
+                "life_time_order_count": 0
             })
 
     def generate_orders(self, order_count=10_000):
@@ -61,12 +69,15 @@ class EcommerceDataGenerator:
         for _ in range(order_count):
             user = random.choice(self._users)
             product = random.choice(self._products)
+            random_qty = random.randint(1, 10)
             self.orders.append({
                 "order_id": str(uuid.uuid4()),
                 "user_id": user["user_id"],
                 "product_id": product["product_id"],
                 "timestamp": self._fake.date_time_between_dates(user["register_date"], 
-                                                                datetime(2026, 12, 31))
+                                                                datetime(2026, 12, 31)),
+                "quantity": random_qty,
+                "revenue": product["price"] * random_qty
             })
         return self.orders
     
@@ -79,4 +90,4 @@ class EcommerceDataGenerator:
 
 if __name__ == "__main__":
     generator = EcommerceDataGenerator()
-    generator.initialize()
+    generator.initialize(num_orders=100_000)

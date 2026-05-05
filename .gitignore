@@ -1,3 +1,14 @@
 .env
 datasets
 uv.lock
+
+# Terraform
+*.tfstate
+*.tfstate.backup
+*.tfvars
+.terraform/
+.terraform.lock.hcl
+
+# Python
+.python-version
+.venv
